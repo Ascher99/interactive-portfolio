@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="pl" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vu Minh Grzegorczyk — Frontend Developer</title>
+  <meta name="description"
+    content="Portfolio Vu Minh Grzegorczyk — Frontend Developer specjalizujący się w React i TypeScript. Zobacz moje projekty i umiejętności." />
+  <meta name="author" content="Vu Minh Grzegorczyk" />
+  <meta name="keywords" content="frontend developer, react, typescript, portfolio, web developer" />
+  <meta property="og:title" content="Vu Minh Grzegorczyk — Frontend Developer" />
+  <meta property="og:description" content="Interaktywne portfolio Frontend Developera." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body>
+
+  <!-- ===== LOADER ===== -->
+  <div id="loader" class="loader-screen">
+    <div class="loader-content">
+      <div class="loader-logo">VMG</div>
+      <div class="loader-bar-container">
+        <div class="loader-bar" id="loader-bar"></div>
+      </div>
+      <p class="loader-text">Loading portfolio...</p>
+    </div>
+  </div>
+
+  <!-- ===== SCROLL PROGRESS ===== -->
+  <div class="scroll-progress" id="scroll-progress"></div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="container navbar__inner">
+      <a href="#hero" class="navbar__logo">
+        <span class="gradient-text">VMG</span><span style="color:var(--accent-primary)">.</span>
+      </a>
+
+      <ul class="navbar__links" id="nav-menu">
+        <li><a href="#about" class="nav-link" data-i18n="nav.about">O mnie</a></li>
+        <li><a href="#skills" class="nav-link" data-i18n="nav.skills">Umiejętności</a></li>
+        <li><a href="#experience" class="nav-link" data-i18n="nav.experience">Doświadczenie</a></li>
+        <li><a href="#projects" class="nav-link" data-i18n="nav.projects">Projekty</a></li>
+        <li><a href="#education" class="nav-link" data-i18n="nav.education">Edukacja</a></li>
+        <li><a href="#contact" class="nav-link" data-i18n="nav.contact">Kontakt</a></li>
+      </ul>
+
+      <div class="navbar__controls">
+        <button class="lang-toggle" id="lang-toggle" aria-label="Toggle language">
+          <span class="lang-current">EN</span>
+        </button>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+          <span class="theme-icon">🌙</span>
+        </button>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span class="hamburger__line"></span>
+          <span class="hamburger__line"></span>
+          <span class="hamburger__line"></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section id="hero" class="hero section">
+    <div class="container hero__content">
+      <div class="hero__text">
+        <p class="hero__greeting scroll-reveal" data-i18n="hero.greeting">Cześć, jestem</p>
+        <h1 class="hero__name scroll-reveal">Vu Minh Grzegorczyk</h1>
+        <div class="hero__title scroll-reveal">
+          <span id="typed-output"></span>
+          <span class="typed-cursor">|</span>
+        </div>
+        <div class="hero__cta scroll-reveal">
+          <a href="#projects" class="btn btn-primary" data-i18n="hero.cta_projects">Zobacz projekty</a>
+          <a href="/assets/cv/CV_Vu_Minh_Grzegorczyk_ENG.pdf" class="btn btn-outline" download
+            data-i18n="hero.cta_cv">Pobierz CV</a>
+        </div>
+        <div class="social-links scroll-reveal">
+          <a href="https://github.com/Ascher99" target="_blank" rel="noopener noreferrer" class="social-links__item"
+            aria-label="GitHub">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+              <path d="M9 18c-4.51 2-5-2-7-2" />
+            </svg>
+          </a>
+          <a href="https://www.linkedin.com/in/vu-minh-grzegorczyk-a14461263/" target="_blank" rel="noopener noreferrer"
+            class="social-links__item" aria-label="LinkedIn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+              <rect width="4" height="12" x="2" y="9" />
+              <circle cx="4" cy="4" r="2" />
+            </svg>
+          </a>
+          <a href="mailto:grzegorczykvuminh@gmail.com" class="social-links__item" aria-label="Email">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="16" x="2" y="4" rx="2" />
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section id="about" class="section">
+    <div class="container">
+      <h2 class="section-title scroll-reveal" data-i18n="about.title">O mnie</h2>
+      <div class="accent-line scroll-reveal"></div>
+      <div class="about__grid">
+        <div class="about__photo-wrapper scroll-reveal">
+          <div class="profile-image-wrapper">
+            <img src="/assets/images/profile.jpg" alt="Vu Minh Grzegorczyk" loading="lazy" />
+          </div>
+        </div>
+        <div class="about__info">
+          <p class="about__bio scroll-reveal" data-i18n="about.bio">
+            Pasjonat technologii webowych i ambitny programista, który solidne fundamenty informatyczne zdobyte w C++,
+            C# i MySQL przekuł w profesjonalną specjalizację we Frontend Developmencie. Obecnie koncentruję się na
+            budowaniu nowoczesnych, skalowalnych aplikacji webowych z wykorzystaniem biblioteki React oraz języka
+            TypeScript. Moje podejście łączy analityczne myślenie wyniesione z języków niskopoziomowych z dbałością o
+            estetykę i responsywność interfejsów tworzonych w HTML i CSS. Stale rozwijam swoje umiejętności w
+            ekosystemie JavaScript, stawiając na czysty kod, nowoczesne wzorce projektowe i efektywne zarządzanie stanem
+            aplikacji, aby dostarczać użytkownikom rozwiązania najwyższej klasy.
+          </p>
+          <div class="about__facts scroll-reveal">
+            <div class="fact-card">
+              <div class="fact-card__icon">📍</div>
+              <div class="fact-card__text">
+                <span class="fact-card__value" data-i18n="about.location">Szczecin / Poznań, Polska</span>
+                <span class="fact-card__label" data-i18n="about.location_label">Lokalizacja</span>
+              </div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-card__icon">🎓</div>
+              <div class="fact-card__text">
+                <span class="fact-card__value" data-i18n="about.status">Student / Inżynier</span>
+                <span class="fact-card__label">Status</span>
+              </div>
+            </div>
+            <div class="fact-card">
+              <div class="fact-card__icon">💼</div>
+              <div class="fact-card__text">
+                <span class="fact-card__value" data-i18n="about.experience_value">Frontend Developer</span>
+                <span class="fact-card__label" data-i18n="about.experience_label">Doświadczenie</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SKILLS ===== -->
+  <section id="skills" class="section">
+    <div class="container">
+      <h2 class="section-title scroll-reveal" data-i18n="skills.title">Umiejętności</h2>
+      <div class="accent-line scroll-reveal"></div>
+
+      <div class="skills__grid">
+        <!-- Frontend -->
+        <div class="skill-category-card glass scroll-reveal">
+          <h3 class="skill-category" data-i18n="skills.frontend">Frontend</h3>
+          <div class="skill-items">
+            <div class="skill-card">
+              <div class="skill-card__header"><span class="skill-card__name">TypeScript</span><span
+                  class="skill-card__level">90%</span></div>
+              <div class="skill-card__progress">
+                <div class="skill-card__progress-bar" data-width="90" style="width:0%"></div>
+              </div>
+            </div>
+            <div class="skill-card">
+              <div class="skill-card__header"><span class="skill-card__name">React</span><span
+                  class="skill-card__level">88%</span></div>
+              <div class="skill-card__progress">
+                <div class="skill-card__progress-bar" data-width="88" style="width:0%"></div>
+              </div>
+            </div>
+            <div class="skill-card">
+              <div class="skill-card__header"><span class="skill-card__name">HTML / CSS</span><span
+                  class="skill-card__level">92%</span></div>
+              <div class="skill-card__progress">
+                <div class="skill-card__progress-bar" data-width="92" style="width:0%"></div>
+              </div>
+            </div>
+            <div class="skill-card">
+              <div class="skill-card__header"><span class="skill-card__name">Tailwind CSS</span><span
+                  class="skill-card__level">80%</span></div>
+              <div class="skill-card__progress">
+                <div class="skill-card__progress-bar" data-width="80" style="width:0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Backend -->
+        <div class="skill-category-card glass scroll-reveal">
+          <h3 class="skill-category" data-i18n="skills.backend">Backend</h3>
+          <div class="skill-items">
+            <div class="skill-card">
+              <div class="skill-card__header"><span class="skill-card__name">Python / FastAPI</span><span
+                  class="skill-card__level">75%</span></div>
+              <div class="skill-card__progress">
+                <div class="skill-card__progress-bar" data-width="75" style="width:0%"></div>
+              </div>
+            </div>
+            <div class="skill-card">
+              <div class="skill-card__header"><span class="skill-card__name">C++ / C#</span><span
+                  class="skill-card__level">70%</span></div>
+              <div class="skill-card__progress">
+                <div class="skill-card__progress-bar" data-width="70" style="width:0%"></div>
+              </div>
+            </div>
+            <div class="skill-card">
+              <div class="skill-card__header"><span class="skill-card__name">SQL / MySQL</span><span
+                  class="skill-card__level">72%</span></div>
+              <div class="skill-card__progress">
+                <div class="skill-card__progress-bar" data-width="72" style="width:0%"></div>
+              </div>
+            </div>
+            <div class="skill-card">
+              <div class="skill-card__header"><span class="skill-card__name">REST API</span><span
+                  class="skill-card__level">82%</span></div>
+              <div class="skill-card__progress">
+                <div class="skill-card__progress-bar" data-width="82" style="width:0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tools -->
+        <div class="skill-category-card glass scroll-reveal">
+          <h3 class="skill-category" data-i18n="skills.tools">Narzędzia</h3>
+          <div class="skill-items">
+            <div class="skill-card">
+              <div class="skill-card__header"><span class="skill-card__name">Git / GitHub</span><span
+                  class="skill-card__level">85%</span></div>
+              <div class="skill-card__progress">
+                <div class="skill-card__progress-bar" data-width="85" style="width:0%"></div>
+              </div>
+            </div>
+            <div class="skill-card">
+              <div class="skill-card__header"><span class="skill-card__name">Docker</span><span
+                  class="skill-card__level">65%</span></div>
+              <div class="skill-card__progress">
+                <div class="skill-card__progress-bar" data-width="65" style="width:0%"></div>
+              </div>
+            </div>
+            <div class="skill-card">
+              <div class="skill-card__header"><span class="skill-card__name">Jira / Agile</span><span
+                  class="skill-card__level">78%</span></div>
+              <div class="skill-card__progress">
+                <div class="skill-card__progress-bar" data-width="78" style="width:0%"></div>
+              </div>
+            </div>
+            <div class="skill-card">
+              <div class="skill-card__header"><span class="skill-card__name">Linux</span><span
+                  class="skill-card__level">68%</span></div>
+              <div class="skill-card__progress">
+                <div class="skill-card__progress-bar" data-width="68" style="width:0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Soft Skills -->
+        <div class="skill-category-card glass scroll-reveal">
+          <h3 class="skill-category" data-i18n="skills.soft">Umiejętności miękkie</h3>
+          <div class="soft-skills-tags">
+            <span class="tech-tag">Praca w zespole</span>
+            <span class="tech-tag">Rozwiązywanie problemów</span>
+            <span class="tech-tag">Komunikacja</span>
+            <span class="tech-tag">Samodzielność</span>
+            <span class="tech-tag">Odporność na stres</span>
+            <span class="tech-tag">Elastyczność</span>
+            <span class="tech-tag">Odpowiedzialność</span>
+            <span class="tech-tag">Empatia</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EXPERIENCE ===== -->
+  <section id="experience" class="section">
+    <div class="container">
+      <h2 class="section-title scroll-reveal" data-i18n="experience.title">Doświadczenie</h2>
+      <div class="accent-line scroll-reveal"></div>
+
+      <div class="experience__timeline">
+        <div class="timeline-item scroll-reveal">
+          <div class="timeline-item__date" data-i18n="experience.theeventa.period">04.2025 – obecnie</div>
+          <div class="timeline-item__card">
+            <h3 class="timeline-item__title" data-i18n="experience.theeventa.role">Frontend Developer</h3>
+            <h4 class="timeline-item__subtitle" data-i18n="experience.theeventa.company">TheEventa</h4>
+            <ul class="timeline-item__description">
+              <li data-i18n="experience.theeventa.desc1">Projektowanie i implementacja warstwy frontendowej w React +
+                TypeScript</li>
+              <li data-i18n="experience.theeventa.desc2">Wsparcie procesów backendowych i administracja baz danych MySQL
+              </li>
+              <li data-i18n="experience.theeventa.desc3">Modelowanie architektury systemów i dokumentacja techniczna
+              </li>
+              <li data-i18n="experience.theeventa.desc4">Optymalizacja algorytmów i praca z Git, Agile/Jira</li>
+            </ul>
+            <div class="timeline-item__tags">
+              <span class="tech-tag">React</span>
+              <span class="tech-tag">TypeScript</span>
+              <span class="tech-tag">MySQL</span>
+              <span class="tech-tag">Git</span>
+              <span class="tech-tag">Jira</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROJECTS ===== -->
+  <section id="projects" class="section">
+    <div class="container">
+      <h2 class="section-title scroll-reveal" data-i18n="projects.title">Projekty</h2>
+      <div class="accent-line scroll-reveal"></div>
+
+      <div class="projects__filters scroll-reveal">
+        <button class="filter-btn active" data-filter="all" data-i18n="projects.filter_all">Wszystkie</button>
+        <button class="filter-btn" data-filter="react">React</button>
+        <button class="filter-btn" data-filter="python">Python</button>
+        <button class="filter-btn" data-filter="javascript">JavaScript</button>
+      </div>
+
+      <div class="projects__grid">
+        <!-- Project 1: Sports Prediction -->
+        <div class="project-card scroll-reveal tilt-card" data-tags="react python typescript">
+          <div class="project-card__image">
+            <img src="/assets/images/projects/sports-prediction.png" alt="Sports Prediction Platform" loading="lazy" />
+            <div class="project-card__image-overlay">
+              <a href="https://github.com/Ascher99" target="_blank" rel="noopener noreferrer"
+                class="btn btn-outline btn-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+                  <path d="M9 18c-4.51 2-5-2-7-2" />
+                </svg>
+                GitHub
+              </a>
+            </div>
+          </div>
+          <div class="project-card__content">
+            <h3 class="project-card__title" data-i18n="projects.prediction.title">Platforma predykcji wyników sportowych
+            </h3>
+            <p class="project-card__description" data-i18n="projects.prediction.desc">
+              Aplikacja full-stack wykorzystująca modele ML do prognozowania wyników meczów piłkarskich dla 10 lig
+              europejskich. Zautomatyzowany potok ETL, inżynieria cech i responsywny interfejs z rozkładem
+              prawdopodobieństwa w czasie rzeczywistym.
+            </p>
+            <div class="project-card__tags">
+              <span class="tech-tag">React</span>
+              <span class="tech-tag">TypeScript</span>
+              <span class="tech-tag">FastAPI</span>
+              <span class="tech-tag">Python</span>
+              <span class="tech-tag">Scikit-learn</span>
+              <span class="tech-tag">Tailwind</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2: Portfolio -->
+        <div class="project-card scroll-reveal tilt-card" data-tags="javascript">
+          <div class="project-card__image"
+            style="display:flex;align-items:center;justify-content:center;background:var(--bg-secondary)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+              stroke="var(--accent-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m18 16 4-4-4-4" />
+              <path d="m6 8-4 4 4 4" />
+              <path d="m14.5 4-5 16" />
+            </svg>
+          </div>
+          <div class="project-card__content">
+            <h3 class="project-card__title" data-i18n="projects.portfolio.title">Portfolio</h3>
+            <p class="project-card__description" data-i18n="projects.portfolio.desc">
+              Responsywna strona portfolio z nowoczesnym designem, animacjami i interaktywnym tłem 3D.
+            </p>
+            <div class="project-card__tags">
+              <span class="tech-tag">HTML</span>
+              <span class="tech-tag">CSS</span>
+              <span class="tech-tag">JavaScript</span>
+              <span class="tech-tag">Three.js</span>
+              <span class="tech-tag">GSAP</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EDUCATION ===== -->
+  <section id="education" class="section">
+    <div class="container">
+      <h2 class="section-title scroll-reveal" data-i18n="education.title">Edukacja</h2>
+      <div class="accent-line scroll-reveal"></div>
+
+      <div class="education__timeline">
+        <div class="timeline-item scroll-reveal">
+          <div class="timeline-item__date" data-i18n="education.cdv.period">2023 – 2026</div>
+          <div class="timeline-item__card">
+            <h3 class="timeline-item__title" data-i18n="education.cdv.name">Collegium Da Vinci</h3>
+            <p class="timeline-item__subtitle" data-i18n="education.cdv.degree">Studia inżynierskie — Informatyka</p>
+          </div>
+        </div>
+        <div class="timeline-item scroll-reveal">
+          <div class="timeline-item__date" data-i18n="education.uam.period">2022 – 2023</div>
+          <div class="timeline-item__card">
+            <h3 class="timeline-item__title" data-i18n="education.uam.name">Uniwersytet im. Adama Mickiewicza</h3>
+            <p class="timeline-item__subtitle" data-i18n="education.uam.degree">Technologie Komputerowe</p>
+          </div>
+        </div>
+        <div class="timeline-item scroll-reveal">
+          <div class="timeline-item__date" data-i18n="education.liceum.period">2019 – 2022</div>
+          <div class="timeline-item__card">
+            <h3 class="timeline-item__title" data-i18n="education.liceum.name">IX Liceum Ogólnokształcące w Szczecinie
+            </h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact" class="section">
+    <div class="container">
+      <h2 class="section-title scroll-reveal" data-i18n="contact.title">Kontakt</h2>
+      <p class="section-subtitle scroll-reveal" data-i18n="contact.subtitle">Porozmawiajmy!</p>
+
+      <div class="contact__grid">
+        <form class="contact-form scroll-reveal" id="contact-form" action="https://formspree.io/f/xkoeenap"
+          method="POST">
+          <div class="contact-form__group">
+            <label class="contact-form__label" for="contact-name" data-i18n="contact.name">Imię</label>
+            <input class="contact-form__input" type="text" id="contact-name" name="name" required autocomplete="name" />
+          </div>
+          <div class="contact-form__group">
+            <label class="contact-form__label" for="contact-email" data-i18n="contact.email">Email</label>
+            <input class="contact-form__input" type="email" id="contact-email" name="email" required
+              autocomplete="email" />
+          </div>
+          <div class="contact-form__group">
+            <label class="contact-form__label" for="contact-message" data-i18n="contact.message">Wiadomość</label>
+            <textarea class="contact-form__textarea" id="contact-message" name="message" rows="5" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" data-i18n="contact.send">Wyślij</button>
+          <p class="form-status" id="form-status"></p>
+        </form>
+
+        <div class="contact__info scroll-reveal">
+          <div class="contact__detail">
+            <div class="contact__detail-icon">✉️</div>
+            <div>
+              <h4>Email</h4>
+              <a href="mailto:grzegorczykvuminh@gmail.com">grzegorczykvuminh@gmail.com</a>
+            </div>
+          </div>
+          <div class="contact__detail">
+            <div class="contact__detail-icon">📞</div>
+            <div>
+              <h4 data-i18n="contact.phone_label">Telefon</h4>
+              <a href="tel:+48729324272">(+48) 729-324-272</a>
+            </div>
+          </div>
+          <div class="contact__detail">
+            <div class="contact__detail-icon">📍</div>
+            <div>
+              <h4 data-i18n="contact.location_label">Lokalizacja</h4>
+              <span data-i18n="about.location">Szczecin / Poznań, Polska</span>
+            </div>
+          </div>
+
+          <div class="social-links" style="margin-top:var(--space-xl)">
+            <a href="https://github.com/Ascher99" target="_blank" rel="noopener noreferrer" class="social-links__item"
+              aria-label="GitHub">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+                <path d="M9 18c-4.51 2-5-2-7-2" />
+              </svg>
+            </a>
+            <a href="https://www.linkedin.com/in/vu-minh-grzegorczyk-a14461263/" target="_blank"
+              rel="noopener noreferrer" class="social-links__item" aria-label="LinkedIn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                <rect width="4" height="12" x="2" y="9" />
+                <circle cx="4" cy="4" r="2" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container footer__content">
+      <p class="footer__copy">
+        <span data-i18n="footer.made">Stworzone z</span> ❤️
+        <span data-i18n="footer.by">przez Vu Minh Grzegorczyk</span>
+      </p>
+      <p class="footer__copy">© <span id="current-year"></span></p>
+    </div>
+  </footer>
+
+  <script type="module" src="/js/main.js"></script>
+</body>
+
+</html>
