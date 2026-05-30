@@ -237,6 +237,14 @@ export function setLanguage(lang) {
     toggleBtn.textContent = lang === 'pl' ? 'EN' : 'PL';
   }
 
+  // Update CV download link based on language
+  const cvLink = document.getElementById('cv-download');
+  if (cvLink) {
+    cvLink.href = lang === 'pl'
+      ? '/assets/cv/CV_Vu_Minh_Grzegorczyk_PL.pdf'
+      : '/assets/cv/CV_Vu_Minh_Grzegorczyk_ENG.pdf';
+  }
+
   // Dispatch a custom event so other modules can react
   window.dispatchEvent(new CustomEvent('languagechange', { detail: { lang } }));
 }
