@@ -510,12 +510,111 @@
   <footer class="footer">
     <div class="container footer__content">
       <p class="footer__copy">
-        <span data-i18n="footer.made">Stworzone z</span> ❤️
+        <span data-i18n="footer.made">Stworzone</span>
         <span data-i18n="footer.by">przez Vu Minh Grzegorczyk</span>
       </p>
       <p class="footer__copy">© <span id="current-year"></span></p>
     </div>
   </footer>
+
+  <!-- ===== 3D BACKGROUND CUSTOMIZER ===== -->
+  <div class="customizer" id="bg-customizer">
+    <button class="customizer__toggle" id="customizer-toggle" aria-label="Customize 3D Background" data-i18n-aria="customizer.toggle_aria">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="4" y1="21" x2="4" y2="14" />
+        <line x1="4" y1="10" x2="4" y2="3" />
+        <line x1="12" y1="21" x2="12" y2="12" />
+        <line x1="12" y1="8" x2="12" y2="3" />
+        <line x1="20" y1="21" x2="20" y2="16" />
+        <line x1="20" y1="12" x2="20" y2="3" />
+        <line x1="1" y1="14" x2="7" y2="14" />
+        <line x1="9" y1="8" x2="15" y2="8" />
+        <line x1="17" y1="16" x2="23" y2="16" />
+      </svg>
+    </button>
+    
+    <div class="customizer__panel glass" id="customizer-panel">
+      <div class="customizer__header">
+        <h3 data-i18n="customizer.title">Laboratorium 3D</h3>
+        <p data-i18n="customizer.desc">Dostosuj cząsteczki w tle</p>
+      </div>
+
+      <div class="customizer__body">
+        <!-- Preset themes -->
+        <div class="customizer__section">
+          <label class="customizer__label" data-i18n="customizer.preset">Motyw cząsteczek</label>
+          <div class="customizer__presets">
+            <button class="preset-btn active" data-preset="emerald" title="Emerald" data-i18n-aria="customizer.preset_emerald" style="background: linear-gradient(135deg, #10b981, #14b8a6)"></button>
+            <button class="preset-btn" data-preset="cyberpunk" title="Cyberpunk" data-i18n-aria="customizer.preset_cyberpunk" style="background: linear-gradient(135deg, #ec4899, #8b5cf6)"></button>
+            <button class="preset-btn" data-preset="ocean" title="Ocean" data-i18n-aria="customizer.preset_ocean" style="background: linear-gradient(135deg, #06b6d4, #3b82f6)"></button>
+            <button class="preset-btn" data-preset="fire" title="Fire" data-i18n-aria="customizer.preset_fire" style="background: linear-gradient(135deg, #f97316, #ef4444)"></button>
+            <button class="preset-btn" data-preset="mono" title="Mono" data-i18n-aria="customizer.preset_mono" style="background: linear-gradient(135deg, #9ca3af, #4b5563)"></button>
+          </div>
+        </div>
+
+        <!-- Particle density (Count) -->
+        <div class="customizer__section">
+          <div class="customizer__row">
+            <label class="customizer__label" for="custom-count" data-i18n="customizer.count">Gęstość cząsteczek</label>
+            <span class="customizer__value" id="val-count">1500</span>
+          </div>
+          <input type="range" id="custom-count" min="300" max="2500" step="100" value="1500" class="customizer__slider" />
+        </div>
+
+        <!-- Movement speed -->
+        <div class="customizer__section">
+          <div class="customizer__row">
+            <label class="customizer__label" for="custom-speed" data-i18n="customizer.speed">Prędkość ruchu</label>
+            <span class="customizer__value" id="val-speed">1.0x</span>
+          </div>
+          <input type="range" id="custom-speed" min="0.2" max="3.0" step="0.1" value="1.0" class="customizer__slider" />
+        </div>
+
+        <!-- Connection lines toggle -->
+        <div class="customizer__section customizer__section--toggle">
+          <label class="customizer__label" for="custom-lines" data-i18n="customizer.lines">Linie połączeń</label>
+          <label class="switch">
+            <input type="checkbox" id="custom-lines" checked />
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+        <!-- Connection line distance -->
+        <div class="customizer__section" id="section-lines-dist">
+          <div class="customizer__row">
+            <label class="customizer__label" for="custom-lines-dist" data-i18n="customizer.lines_dist">Długość połączeń</label>
+            <span class="customizer__value" id="val-lines-dist">120px</span>
+          </div>
+          <input type="range" id="custom-lines-dist" min="60" max="200" step="10" value="120" class="customizer__slider" />
+        </div>
+
+        <!-- Mouse interaction mode -->
+        <div class="customizer__section">
+          <label class="customizer__label" for="custom-interaction" data-i18n="customizer.interaction">Interakcja myszy</label>
+          <div class="select-wrapper">
+            <select id="custom-interaction" class="customizer__select">
+              <option value="repel" data-i18n="customizer.interaction_repel" selected>Odpychanie</option>
+              <option value="attract" data-i18n="customizer.interaction_attract">Przyciąganie</option>
+              <option value="none" data-i18n="customizer.interaction_none">Brak</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Hover radius -->
+        <div class="customizer__section" id="section-radius">
+          <div class="customizer__row">
+            <label class="customizer__label" for="custom-radius" data-i18n="customizer.radius">Promień interakcji</label>
+            <span class="customizer__value" id="val-radius">150px</span>
+          </div>
+          <input type="range" id="custom-radius" min="50" max="250" step="10" value="150" class="customizer__slider" />
+        </div>
+      </div>
+
+      <div class="customizer__footer">
+        <button id="customizer-reset" class="btn btn-outline btn-sm" style="width:100%" data-i18n="customizer.reset">Resetuj</button>
+      </div>
+    </div>
+  </div>
 
   <script type="module" src="/js/main.js"></script>
 </body>

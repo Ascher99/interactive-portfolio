@@ -21,6 +21,7 @@ import { initParticles } from './three-bg.js';
 import { initTyped } from './typed.js';
 import { initAnimations } from './animations.js';
 import { initContactForm } from './contact.js';
+import { initCustomizer } from './customizer.js';
 
 // ─── Bootstrap ───────────────────────────────────────────────────────────────
 
@@ -38,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* 11 */ setupLanguageToggle();
   /* 12 */ setupThemeToggle();
   /* 13 */ setupActiveNavHighlight();
+  /* 14 */ initCustomizer();
 });
 
 // ─── Typed effect ────────────────────────────────────────────────────────────

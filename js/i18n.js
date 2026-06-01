@@ -87,8 +87,29 @@ export const translations = {
     'contact.success': 'Wiadomość wysłana!',
 
     // Footer
-    'footer.made': 'Stworzone z',
+    'footer.made': 'Stworzone',
     'footer.by': 'przez Vu Minh Grzegorczyk',
+
+    // 3D Customizer
+    'customizer.title': 'Laboratorium 3D',
+    'customizer.desc': 'Dostosuj cząsteczki w tle',
+    'customizer.preset': 'Motyw cząsteczek',
+    'customizer.preset_emerald': 'Szmaragd',
+    'customizer.preset_cyberpunk': 'Cyberpunk',
+    'customizer.preset_ocean': 'Ocean',
+    'customizer.preset_fire': 'Ogień',
+    'customizer.preset_mono': 'Mono',
+    'customizer.count': 'Gęstość cząsteczek',
+    'customizer.speed': 'Prędkość ruchu',
+    'customizer.lines': 'Linie połączeń',
+    'customizer.lines_dist': 'Długość połączeń',
+    'customizer.interaction': 'Interakcja myszy',
+    'customizer.interaction_repel': 'Odpychanie',
+    'customizer.interaction_attract': 'Przyciąganie',
+    'customizer.interaction_none': 'Brak',
+    'customizer.radius': 'Promień interakcji',
+    'customizer.reset': 'Resetuj',
+    'customizer.toggle_aria': 'Dostosuj tło 3D',
   },
 
   en: {
@@ -167,8 +188,29 @@ export const translations = {
     'contact.success': 'Message sent!',
 
     // Footer
-    'footer.made': 'Made with',
+    'footer.made': 'Made',
     'footer.by': 'by Vu Minh Grzegorczyk',
+
+    // 3D Customizer
+    'customizer.title': '3D Particle Lab',
+    'customizer.desc': 'Customize background particles',
+    'customizer.preset': 'Particle Color Theme',
+    'customizer.preset_emerald': 'Emerald',
+    'customizer.preset_cyberpunk': 'Cyberpunk',
+    'customizer.preset_ocean': 'Ocean',
+    'customizer.preset_fire': 'Fire',
+    'customizer.preset_mono': 'Mono',
+    'customizer.count': 'Particle Density',
+    'customizer.speed': 'Movement Speed',
+    'customizer.lines': 'Connection Lines',
+    'customizer.lines_dist': 'Line Max Distance',
+    'customizer.interaction': 'Mouse Interaction',
+    'customizer.interaction_repel': 'Repulsion',
+    'customizer.interaction_attract': 'Attraction',
+    'customizer.interaction_none': 'None',
+    'customizer.radius': 'Interaction Radius',
+    'customizer.reset': 'Reset Settings',
+    'customizer.toggle_aria': 'Customize 3D background',
   },
 };
 

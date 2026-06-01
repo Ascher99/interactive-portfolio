@@ -11,17 +11,40 @@ import * as THREE from 'three';
 
 // ─── Configuration ───────────────────────────────────────────────────────────
 
-const PARTICLE_COUNT = 1500;
-const LARGE_PARTICLE_COUNT = 40;
-const CONNECTION_DISTANCE = 120; // px – max distance for lines
-const MAX_CONNECTIONS = 80; // limit total line segments per frame
-const MOUSE_RADIUS = 150; // px – interaction radius
-const MOUSE_FORCE = 0.8; // repulsion strength
+export const PRESETS = {
+  emerald: {
+    dark: { primary: 0x10b981, secondary: 0x14b8a6 },
+    light: { primary: 0x059669, secondary: 0x0d9488 }
+  },
+  cyberpunk: {
+    dark: { primary: 0xec4899, secondary: 0x8b5cf6 },
+    light: { primary: 0xdb2777, secondary: 0x7c3aed }
+  },
+  ocean: {
+    dark: { primary: 0x06b6d4, secondary: 0x3b82f6 },
+    light: { primary: 0x0891b2, secondary: 0x2563eb }
+  },
+  fire: {
+    dark: { primary: 0xf97316, secondary: 0xef4444 },
+    light: { primary: 0xea580c, secondary: 0xdc2626 }
+  },
+  mono: {
+    dark: { primary: 0x9ca3af, secondary: 0x4b5563 },
+    light: { primary: 0x6b7280, secondary: 0x374151 }
+  }
+};
 
-// Theme-aware colour palettes
-const PALETTES = {
-  dark: { primary: 0x10b981, secondary: 0x14b8a6 },
-  light: { primary: 0x059669, secondary: 0x0d9488 },
+export const config = {
+  particleCount: 1500,
+  largeParticleCount: 40,
+  connectionDistance: 120,
+  maxConnections: 80,
+  mouseRadius: 150,
+  mouseForce: 0.8,
+  speedMultiplier: 1.0,
+  showLines: true,
+  interactionMode: 'repel', // 'repel' | 'attract' | 'none'
+  paletteName: 'emerald'
 };
 
 // ─── Module state ────────────────────────────────────────────────────────────
@@ -33,12 +56,18 @@ let largeVelocities = [];
 let mouse = new THREE.Vector2(9999, 9999); // offscreen initially
 let rafId = null;
 let canvas = null;
-let currentPalette = PALETTES.dark;
+let currentPalette = PRESETS.emerald.dark;
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function getTheme() {
   return document.documentElement.getAttribute('data-theme') || 'dark';
+}
+
+function resolvePalette() {
+  const theme = getTheme();
+  const preset = PRESETS[config.paletteName] || PRESETS.emerald;
+  return preset[theme];
 }
 
 function randomRange(min, max) {
@@ -49,16 +78,17 @@ function randomRange(min, max) {
 
 function createParticles() {
   // --- Small particles ---
-  const positions = new Float32Array(PARTICLE_COUNT * 3);
-  const sizes = new Float32Array(PARTICLE_COUNT);
-  const colors = new Float32Array(PARTICLE_COUNT * 3);
+  const count = config.particleCount;
+  const positions = new Float32Array(count * 3);
+  const sizes = new Float32Array(count);
+  const colors = new Float32Array(count * 3);
   velocities = [];
 
   const palette = currentPalette;
   const col1 = new THREE.Color(palette.primary);
   const col2 = new THREE.Color(palette.secondary);
 
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
+  for (let i = 0; i < count; i++) {
     const i3 = i * 3;
     positions[i3] = randomRange(-window.innerWidth / 2, window.innerWidth / 2);
     positions[i3 + 1] = randomRange(-window.innerHeight / 2, window.innerHeight / 2);
@@ -98,11 +128,12 @@ function createParticles() {
   scene.add(particlesMesh);
 
   // --- Large particles (depth effect) ---
-  const lgPositions = new Float32Array(LARGE_PARTICLE_COUNT * 3);
-  const lgColors = new Float32Array(LARGE_PARTICLE_COUNT * 3);
+  const lgCount = config.largeParticleCount;
+  const lgPositions = new Float32Array(lgCount * 3);
+  const lgColors = new Float32Array(lgCount * 3);
   largeVelocities = [];
 
-  for (let i = 0; i < LARGE_PARTICLE_COUNT; i++) {
+  for (let i = 0; i < lgCount; i++) {
     const i3 = i * 3;
     lgPositions[i3] = randomRange(-window.innerWidth / 2, window.innerWidth / 2);
     lgPositions[i3 + 1] = randomRange(-window.innerHeight / 2, window.innerHeight / 2);
@@ -139,8 +170,8 @@ function createParticles() {
   // --- Lines geometry (re-built every frame) ---
   const lineGeometry = new THREE.BufferGeometry();
   // Pre-allocate buffer for max connections (2 vertices per segment)
-  const linePositions = new Float32Array(MAX_CONNECTIONS * 6);
-  const lineColors = new Float32Array(MAX_CONNECTIONS * 6);
+  const linePositions = new Float32Array(config.maxConnections * 6);
+  const lineColors = new Float32Array(config.maxConnections * 6);
   lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
   lineGeometry.setAttribute('color', new THREE.BufferAttribute(lineColors, 3));
   lineGeometry.setDrawRange(0, 0);
@@ -164,8 +195,9 @@ function updateColors() {
   const col2 = new THREE.Color(palette.secondary);
 
   // Small particles
+  const count = config.particleCount;
   const colors = particlesMesh.geometry.attributes.color.array;
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
+  for (let i = 0; i < count; i++) {
     const i3 = i * 3;
     const mix = Math.random();
     const c = col1.clone().lerp(col2, mix);
@@ -176,8 +208,9 @@ function updateColors() {
   particlesMesh.geometry.attributes.color.needsUpdate = true;
 
   // Large particles
+  const lgCount = config.largeParticleCount;
   const lgColors = largeParticlesMesh.geometry.attributes.color.array;
-  for (let i = 0; i < LARGE_PARTICLE_COUNT; i++) {
+  for (let i = 0; i < lgCount; i++) {
     const i3 = i * 3;
     const c = col1.clone().lerp(col2, Math.random());
     lgColors[i3] = c.r;
@@ -195,15 +228,17 @@ function animate() {
   const hw = window.innerWidth / 2;
   const hh = window.innerHeight / 2;
   const positions = particlesMesh.geometry.attributes.position.array;
+  const count = config.particleCount;
 
   // Move & wrap small particles + mouse interaction
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
+  for (let i = 0; i < count; i++) {
     const i3 = i * 3;
     const vel = velocities[i];
+    if (!vel) continue;
 
-    positions[i3] += vel.x;
-    positions[i3 + 1] += vel.y;
-    positions[i3 + 2] += vel.z;
+    positions[i3] += vel.x * config.speedMultiplier;
+    positions[i3 + 1] += vel.y * config.speedMultiplier;
+    positions[i3 + 2] += vel.z * config.speedMultiplier;
 
     // Wrap around viewport edges (with margin)
     if (positions[i3] > hw + 50) positions[i3] = -hw - 50;
@@ -211,25 +246,39 @@ function animate() {
     if (positions[i3 + 1] > hh + 50) positions[i3 + 1] = -hh - 50;
     if (positions[i3 + 1] < -hh - 50) positions[i3 + 1] = hh + 50;
 
-    // Mouse repulsion (only for nearby particles in xy)
-    const dx = positions[i3] - mouse.x;
-    const dy = positions[i3 + 1] - mouse.y;
-    const dist = Math.sqrt(dx * dx + dy * dy);
+    // Mouse interaction (repel / attract)
+    if (config.interactionMode !== 'none') {
+      const dx = positions[i3] - mouse.x;
+      const dy = positions[i3 + 1] - mouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
 
-    if (dist < MOUSE_RADIUS && dist > 0) {
-      const force = (MOUSE_RADIUS - dist) / MOUSE_RADIUS * MOUSE_FORCE;
-      positions[i3] += (dx / dist) * force;
-      positions[i3 + 1] += (dy / dist) * force;
+      if (dist < config.mouseRadius && dist > 0) {
+        const force = (config.mouseRadius - dist) / config.mouseRadius * config.mouseForce;
+        const dirX = dx / dist;
+        const dirY = dy / dist;
+
+        if (config.interactionMode === 'repel') {
+          positions[i3] += dirX * force;
+          positions[i3 + 1] += dirY * force;
+        } else if (config.interactionMode === 'attract') {
+          positions[i3] -= dirX * force;
+          positions[i3 + 1] -= dirY * force;
+        }
+      }
     }
   }
   particlesMesh.geometry.attributes.position.needsUpdate = true;
 
   // Move large particles (slower)
+  const lgCount = config.largeParticleCount;
   const lgPos = largeParticlesMesh.geometry.attributes.position.array;
-  for (let i = 0; i < LARGE_PARTICLE_COUNT; i++) {
+  for (let i = 0; i < lgCount; i++) {
     const i3 = i * 3;
-    lgPos[i3] += largeVelocities[i].x;
-    lgPos[i3 + 1] += largeVelocities[i].y;
+    const vel = largeVelocities[i];
+    if (!vel) continue;
+
+    lgPos[i3] += vel.x * config.speedMultiplier;
+    lgPos[i3 + 1] += vel.y * config.speedMultiplier;
 
     if (lgPos[i3] > hw + 50) lgPos[i3] = -hw - 50;
     if (lgPos[i3] < -hw - 50) lgPos[i3] = hw + 50;
@@ -239,7 +288,12 @@ function animate() {
   largeParticlesMesh.geometry.attributes.position.needsUpdate = true;
 
   // --- Update connection lines ---
-  updateLines(positions);
+  if (config.showLines) {
+    linesMesh.visible = true;
+    updateLines(positions);
+  } else {
+    linesMesh.visible = false;
+  }
 
   renderer.render(scene, camera);
 }
@@ -255,16 +309,19 @@ function updateLines(positions) {
   let segCount = 0;
 
   const col = new THREE.Color(currentPalette.primary);
+  const count = config.particleCount;
+  const maxConn = config.maxConnections;
+  const connDist = config.connectionDistance;
 
   // Simple brute-force with early exit for performance
   // We only check a subset of particles to keep it fast
-  const step = Math.max(1, Math.floor(PARTICLE_COUNT / 500)); // sample ~500 particles
+  const step = Math.max(1, Math.floor(count / 500)); // sample ~500 particles
 
-  for (let i = 0; i < PARTICLE_COUNT && segCount < MAX_CONNECTIONS; i += step) {
+  for (let i = 0; i < count && segCount < maxConn; i += step) {
     const ax = positions[i * 3];
     const ay = positions[i * 3 + 1];
 
-    for (let j = i + step; j < PARTICLE_COUNT && segCount < MAX_CONNECTIONS; j += step) {
+    for (let j = i + step; j < count && segCount < maxConn; j += step) {
       const bx = positions[j * 3];
       const by = positions[j * 3 + 1];
 
@@ -272,10 +329,10 @@ function updateLines(positions) {
       const dy = ay - by;
       const distSq = dx * dx + dy * dy;
 
-      if (distSq < CONNECTION_DISTANCE * CONNECTION_DISTANCE) {
+      if (distSq < connDist * connDist) {
         const idx = segCount * 6;
         const dist = Math.sqrt(distSq);
-        const alpha = 1 - dist / CONNECTION_DISTANCE;
+        const alpha = 1 - dist / connDist;
 
         linePos[idx] = ax;
         linePos[idx + 1] = ay;
@@ -326,11 +383,62 @@ function onResize() {
 
 function onThemeChange(e) {
   const theme = e?.detail?.theme ?? getTheme();
-  currentPalette = PALETTES[theme] || PALETTES.dark;
+  currentPalette = resolvePalette();
   if (particlesMesh) updateColors();
 }
 
 // ─── Public API ──────────────────────────────────────────────────────────────
+
+/**
+ * Recreate particles geometry and material buffer when density config changes.
+ */
+export function recreateParticles() {
+  if (!scene) return;
+
+  if (particlesMesh) {
+    scene.remove(particlesMesh);
+    particlesMesh.geometry.dispose();
+    particlesMesh.material.dispose();
+  }
+  if (largeParticlesMesh) {
+    scene.remove(largeParticlesMesh);
+    largeParticlesMesh.geometry.dispose();
+    largeParticlesMesh.material.dispose();
+  }
+  if (linesMesh) {
+    scene.remove(linesMesh);
+    linesMesh.geometry.dispose();
+    linesMesh.material.dispose();
+  }
+
+  createParticles();
+}
+
+/**
+ * Apply configuration updates and selectively recreate or update colors
+ */
+export function updateConfig(newConfig) {
+  const oldVal = {
+    count: config.particleCount,
+    maxConn: config.maxConnections,
+    palette: config.paletteName
+  };
+
+  Object.assign(config, newConfig);
+
+  const needsRecreate =
+    config.particleCount !== oldVal.count ||
+    config.maxConnections !== oldVal.maxConn;
+
+  const needsColorUpdate = config.paletteName !== oldVal.palette;
+
+  if (needsRecreate) {
+    recreateParticles();
+  } else if (needsColorUpdate) {
+    currentPalette = resolvePalette();
+    if (particlesMesh) updateColors();
+  }
+}
 
 /**
  * Bootstrap the Three.js particle scene.
@@ -357,7 +465,7 @@ export function initParticles() {
   scene = new THREE.Scene();
 
   // Set palette
-  currentPalette = PALETTES[getTheme()] || PALETTES.dark;
+  currentPalette = resolvePalette();
 
   // Build particles
   createParticles();
@@ -369,8 +477,7 @@ export function initParticles() {
 
   // Also watch data-theme via MutationObserver as a fallback
   const observer = new MutationObserver(() => {
-    const theme = getTheme();
-    currentPalette = PALETTES[theme] || PALETTES.dark;
+    currentPalette = resolvePalette();
     if (particlesMesh) updateColors();
   });
   observer.observe(document.documentElement, {
