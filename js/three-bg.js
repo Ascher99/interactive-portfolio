@@ -43,7 +43,7 @@ export const config = {
   mouseForce: 0.8,
   speedMultiplier: 1.0,
   showLines: true,
-  interactionMode: 'repel', // 'repel' | 'attract' | 'none'
+  interactionMode: 'repel', // 'repel' | 'attract' | 'swirl' | 'none'
   paletteName: 'emerald'
 };
 
@@ -54,6 +54,7 @@ let particlesMesh, largeParticlesMesh, linesMesh;
 let velocities = [];
 let largeVelocities = [];
 let mouse = new THREE.Vector2(9999, 9999); // offscreen initially
+let shockwaves = [];
 let rafId = null;
 let canvas = null;
 let currentPalette = PRESETS.emerald.dark;
@@ -246,7 +247,7 @@ function animate() {
     if (positions[i3 + 1] > hh + 50) positions[i3 + 1] = -hh - 50;
     if (positions[i3 + 1] < -hh - 50) positions[i3 + 1] = hh + 50;
 
-    // Mouse interaction (repel / attract)
+    // Mouse interaction (repel / attract / swirl)
     if (config.interactionMode !== 'none') {
       const dx = positions[i3] - mouse.x;
       const dy = positions[i3 + 1] - mouse.y;
@@ -263,10 +264,44 @@ function animate() {
         } else if (config.interactionMode === 'attract') {
           positions[i3] -= dirX * force;
           positions[i3 + 1] -= dirY * force;
+        } else if (config.interactionMode === 'swirl') {
+          // Tangential vortex velocity
+          positions[i3] += -dirY * force * 1.5;
+          positions[i3 + 1] += dirX * force * 1.5;
         }
       }
     }
   }
+
+  // Update click shockwave radial impulses
+  if (shockwaves.length > 0) {
+    for (let w = shockwaves.length - 1; w >= 0; w--) {
+      const wave = shockwaves[w];
+      wave.radius += wave.speed;
+
+      if (wave.radius > wave.maxRadius) {
+        shockwaves.splice(w, 1);
+        continue;
+      }
+
+      const waveFrontThickness = 40;
+      const waveForceMultiplier = (1 - wave.radius / wave.maxRadius) * wave.force;
+
+      for (let i = 0; i < count; i++) {
+        const i3 = i * 3;
+        const dx = positions[i3] - wave.x;
+        const dy = positions[i3 + 1] - wave.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (Math.abs(dist - wave.radius) < waveFrontThickness && dist > 0) {
+          const push = waveForceMultiplier * (1 - Math.abs(dist - wave.radius) / waveFrontThickness);
+          positions[i3] += (dx / dist) * push;
+          positions[i3 + 1] += (dy / dist) * push;
+        }
+      }
+    }
+  }
+
   particlesMesh.geometry.attributes.position.needsUpdate = true;
 
   // Move large particles (slower)
@@ -365,6 +400,20 @@ function onMouseMove(e) {
   // Convert screen coords to scene coords (centered origin)
   mouse.x = e.clientX - window.innerWidth / 2;
   mouse.y = -(e.clientY - window.innerHeight / 2);
+}
+
+function onClick(e) {
+  const x = e.clientX - window.innerWidth / 2;
+  const y = -(e.clientY - window.innerHeight / 2);
+  shockwaves.push({
+    x,
+    y,
+    radius: 10,
+    maxRadius: 320,
+    speed: 12,
+    force: 6.0,
+  });
+  if (shockwaves.length > 6) shockwaves.shift();
 }
 
 function onResize() {
@@ -472,6 +521,7 @@ export function initParticles() {
 
   // Listeners
   window.addEventListener('mousemove', onMouseMove, { passive: true });
+  window.addEventListener('click', onClick, { passive: true });
   window.addEventListener('resize', onResize, { passive: true });
   window.addEventListener('themechange', onThemeChange);
 
@@ -497,6 +547,7 @@ export function destroyParticles() {
   rafId = null;
 
   window.removeEventListener('mousemove', onMouseMove);
+  window.removeEventListener('click', onClick);
   window.removeEventListener('resize', onResize);
   window.removeEventListener('themechange', onThemeChange);
 
@@ -517,4 +568,5 @@ export function destroyParticles() {
   linesMesh = null;
   velocities = [];
   largeVelocities = [];
+  shockwaves = [];
 }
