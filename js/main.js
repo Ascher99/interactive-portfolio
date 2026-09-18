@@ -22,6 +22,7 @@ import { initTyped } from './typed.js';
 import { initAnimations } from './animations.js';
 import { initContactForm } from './contact.js';
 import { initCustomizer } from './customizer.js';
+import { initBackToTop } from './back-to-top.js';
 
 // ─── Bootstrap ───────────────────────────────────────────────────────────────
 
@@ -40,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* 12 */ setupThemeToggle();
   /* 13 */ setupActiveNavHighlight();
   /* 14 */ initCustomizer();
+  /* 15 */ initBackToTop();
 });
 
 // ─── Typed effect ────────────────────────────────────────────────────────────
